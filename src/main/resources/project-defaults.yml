@@ -1,0 +1,28 @@
+# A project defaults for use with MP-JWT auth-method that include additional role mapping
+swarm:
+  bind:
+    address: localhost
+  # Example of passing in token verification information via project file
+  mpjwtauth:
+    token:
+      issuedBy: "https://server.example.com"
+  security:
+    security-domains:
+      jwt-jaspi:
+        jaspi-authentication:
+          login-module-stacks:
+          # This stack performs the group to role mapping
+            roles-lm-stack:
+              login-modules:
+                - login-module: rm
+                  code: RoleMapping
+                  flag: optional
+                  module-options:
+                    rolesProperties: jwt-roles.properties
+          auth-modules:
+          # This module integrates the MP-JWT custom authentication mechanism into the web container
+            http:
+              code: org.wildfly.extension.undertow.security.jaspi.modules.HTTPSchemeServerAuthModule
+              module: org.wildfly.extension.undertow
+              flag: required
+              login-module-stack-ref: roles-lm-stack
