@@ -22,7 +22,8 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
             .addAsWebInfResource("jwt-roles.properties", "classes/jwt-roles.properties")
             .addAsWebInfResource("WEB-INF/jboss-web.xml", "jboss-web.xml")
             .addAsManifestResource(war.get("/WEB-INF/classes/publicKey.pem").getAsset(), "/MP-JWT-SIGNER")
-                ;
+            .setWebXML("WEB-INF/web.xml")
+            ;
         log.info("Augmented war: \n"+war.toString(true));
     }
 }

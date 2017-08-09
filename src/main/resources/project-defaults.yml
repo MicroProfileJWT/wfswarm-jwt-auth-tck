@@ -11,12 +11,12 @@ swarm:
       jwt-jaspi:
         jaspi-authentication:
           login-module-stacks:
-          # This stack performs the group to role mapping
             roles-lm-stack:
               login-modules:
+                # This stack performs the token verification and group to role mapping
                 - login-module: rm
-                  code: RoleMapping
-                  flag: optional
+                  code: org.eclipse.microprofile.jwt.wfswarm.jaas.JWTLoginModule
+                  flag: required
                   module-options:
                     rolesProperties: jwt-roles.properties
           auth-modules:
