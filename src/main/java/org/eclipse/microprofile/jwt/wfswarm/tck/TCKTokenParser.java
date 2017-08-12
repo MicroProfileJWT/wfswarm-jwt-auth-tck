@@ -22,7 +22,7 @@ package org.eclipse.microprofile.jwt.wfswarm.tck;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 
-import org.eclipse.microprofile.jwt.JWTPrincipal;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.jwt.impl.DefaultJWTCallerPrincipalFactory;
 import org.eclipse.microprofile.jwt.principal.JWTAuthContextInfo;
 import org.eclipse.microprofile.jwt.principal.JWTCallerPrincipalFactory;
@@ -35,7 +35,7 @@ public class TCKTokenParser implements ITokenParser {
 
 
     @Override
-    public JWTPrincipal parse(String bearerToken, String issuer, PublicKey publicKey) throws Exception {
+    public JsonWebToken parse(String bearerToken, String issuer, PublicKey publicKey) throws Exception {
         JWTAuthContextInfo authContextInfo = new JWTAuthContextInfo((RSAPublicKey) publicKey, issuer);
         JWTCallerPrincipalFactory factory = DefaultJWTCallerPrincipalFactory.instance();
         return factory.parse(bearerToken, authContextInfo);
