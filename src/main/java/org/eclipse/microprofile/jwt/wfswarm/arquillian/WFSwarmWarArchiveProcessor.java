@@ -2,6 +2,9 @@ package org.eclipse.microprofile.jwt.wfswarm.arquillian;
 
 import java.util.logging.Logger;
 
+import javax.enterprise.inject.spi.Extension;
+
+import org.eclipse.microprofile.jwt.wfswarm.cdi.MPJWTExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
@@ -18,7 +21,6 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
         log.info("Preparing archive: "+appArchive);
         WebArchive war = WebArchive.class.cast(appArchive);
         war.addAsResource("project-defaults.yml", "/project-defaults.yml")
-            .addAsWebInfResource("jwt-users.properties", "classes/jwt-users.properties")
             .addAsWebInfResource("jwt-roles.properties", "classes/jwt-roles.properties")
             .addAsWebInfResource("WEB-INF/jboss-web.xml", "jboss-web.xml")
             .addAsManifestResource(war.get("/WEB-INF/classes/publicKey.pem").getAsset(), "/MP-JWT-SIGNER")
