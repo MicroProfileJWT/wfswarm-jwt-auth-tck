@@ -76,13 +76,32 @@
         <!-- -->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>arquillian</artifactId>
-            <version>${version.wildfly.swarm}</version>
+            <artifactId>microprofile-jwt-auth-fraction</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>microprofile-jwt-auth-fraction</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>cdi</artifactId>
+            <version>${version.wildfly.swarm}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs-cdi</artifactId>
+            <version>${version.wildfly.swarm}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs-jsonp</artifactId>
+            <version>${version.wildfly.swarm}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>arquillian</artifactId>
+            <version>${version.wildfly.swarm}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Include the MP-JWT TCK dependencies -->
