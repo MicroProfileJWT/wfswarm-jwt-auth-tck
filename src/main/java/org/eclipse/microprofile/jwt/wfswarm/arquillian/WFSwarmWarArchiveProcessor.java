@@ -1,15 +1,19 @@
 package org.eclipse.microprofile.jwt.wfswarm.arquillian;
 
+import java.net.URL;
 import java.util.logging.Logger;
 
-import javax.enterprise.inject.spi.Extension;
-
-import org.eclipse.microprofile.jwt.wfswarm.cdi.MPJWTExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+/**
+ * An ApplicationArchiveProcessor for the MP-JWT TCK that includes:
+ * - an appropriate project-defaults.yml that sets up the required security domain supporting MP-JWT auth
+ * - a jwt-roles.properties that does the group1 to Group1MappedRole mapping
+ * - copies /WEB-INF/classes/publicKey.pem to /MP-JWT-SIGNER
+ */
 public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
     private static Logger log = Logger.getLogger(WFSwarmWarArchiveProcessor.class.getName());
 
@@ -20,11 +24,16 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
         }
         log.info("Preparing archive: "+appArchive);
         WebArchive war = WebArchive.class.cast(appArchive);
+        // This allows for test specific web.xml files. Generally this should not be needed.
+        String warName = war.getName();
+        String webXmlName = "/WEB-INF/" + warName + ".xml";
+        URL webXml = WFSwarmWarArchiveProcessor.class.getResource(webXmlName);
+        if (webXml != null) {
+            war.setWebXML(webXml);
+        }
         war.addAsResource("project-defaults.yml", "/project-defaults.yml")
             .addAsWebInfResource("jwt-roles.properties", "classes/jwt-roles.properties")
-            .addAsWebInfResource("WEB-INF/jboss-web.xml", "jboss-web.xml")
             .addAsManifestResource(war.get("/WEB-INF/classes/publicKey.pem").getAsset(), "/MP-JWT-SIGNER")
-            .setWebXML("WEB-INF/web.xml")
             ;
         log.info("Augmented war: \n"+war.toString(true));
     }
