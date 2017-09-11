@@ -8,14 +8,14 @@ swarm:
       issuedBy: "https://server.example.com"
   security:
     security-domains:
-      jwt-jaspi:
+      TCK-MP-JWT:
         jaspi-authentication:
           login-module-stacks:
             roles-lm-stack:
               login-modules:
                 # This stack performs the token verification and group to role mapping
                 - login-module: rm
-                  code: org.eclipse.microprofile.jwt.wfswarm.jaas.JWTLoginModule
+                  code: org.wildfly.swarm.mpjwtauth.deployment.auth.jaas.JWTLoginModule
                   flag: required
                   module-options:
                     rolesProperties: jwt-roles.properties
