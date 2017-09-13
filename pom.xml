@@ -19,17 +19,33 @@
 
     <groupId>org.wildfly.swarm</groupId>
     <artifactId>jwt-auth-tck</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-MP_12-RC2</version>
     <name>MicroProfile JWT Auth TCK Harness WFSwarm Implementation</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <version.wildfly.swarm>2017.7.0</version.wildfly.swarm>
+        <version.wildfly.swarm>2017.10.0-MP_12-RC2</version.wildfly.swarm>
+        <version.mpjwt.auth>1.0-RC11</version.mpjwt.auth>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>repo.eclipse.org</id>
+            <name>Eclipse MicroProfile Repository - Releases</name>
+            <url>https://repo.eclipse.org/content/repositories/microprofile-releases/</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>bom-all</artifactId>
+                <version>${version.wildfly.swarm}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
@@ -41,17 +57,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.eclipse.microprofile.jwt</groupId>
-            <artifactId>jwt-auth-principal-prototype</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <!-- This is the MP-JWT TCK base extension and utility classes -->
-        <dependency>
-            <groupId>org.eclipse.microprofile.jwt</groupId>
-            <artifactId>microprofile-jwt-auth-tck</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!-- Arquillian extension SPI -->
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
@@ -76,57 +81,49 @@
         <!-- -->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>microprofile-jwt-auth-fraction</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>microprofile-jwt</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>cdi</artifactId>
-            <version>${version.wildfly.swarm}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jaxrs-cdi</artifactId>
-            <version>${version.wildfly.swarm}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jaxrs-jsonp</artifactId>
-            <version>${version.wildfly.swarm}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>ejb</artifactId>
-            <version>${version.wildfly.swarm}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>security</artifactId>
-            <version>${version.wildfly.swarm}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>arquillian</artifactId>
-            <version>${version.wildfly.swarm}</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Include the MP-JWT TCK dependencies -->
+        <!-- This is the MP-JWT TCK base extension and utility classes -->
         <dependency>
             <groupId>org.eclipse.microprofile.jwt</groupId>
             <artifactId>microprofile-jwt-auth-tck</artifactId>
-            <type>jar</type>
-            <version>1.0-SNAPSHOT</version>
+            <version>${version.mpjwt.auth}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.microprofile.jwt</groupId>
             <artifactId>microprofile-jwt-auth-tck</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${version.mpjwt.auth}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -165,11 +162,11 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20</version>
                 <configuration>
-                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <redirectTestOutputToFile>false</redirectTestOutputToFile>
                     <suiteXmlFiles>
                         <suiteXmlFile>tck-base-suite.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <forkCount>1</forkCount>
+                    <forkCount>0</forkCount>
                 </configuration>
             </plugin>
         </plugins>
