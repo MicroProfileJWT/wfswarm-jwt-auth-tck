@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 /**
@@ -23,7 +25,13 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
             return;
         }
         log.info("Preparing archive: "+appArchive);
+        // Only augment archives with a publicKey indicating a MP-JWT test
         WebArchive war = WebArchive.class.cast(appArchive);
+        Node publicKeyNode = war.get("/WEB-INF/classes/publicKey.pem");
+        if (publicKeyNode == null) {
+            return;
+        }
+
         // This allows for test specific web.xml files. Generally this should not be needed.
         String warName = war.getName();
         String webXmlName = "/WEB-INF/" + warName + ".xml";
@@ -33,7 +41,7 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
         }
         war.addAsResource("project-defaults.yml", "/project-defaults.yml")
             .addAsWebInfResource("jwt-roles.properties", "classes/jwt-roles.properties")
-            .addAsManifestResource(war.get("/WEB-INF/classes/publicKey.pem").getAsset(), "/MP-JWT-SIGNER")
+            .addAsManifestResource(publicKeyNode.getAsset(), "/MP-JWT-SIGNER")
             ;
         log.info("Augmented war: \n"+war.toString(true));
     }
