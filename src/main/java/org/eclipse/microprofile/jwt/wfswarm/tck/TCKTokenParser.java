@@ -24,9 +24,9 @@ import java.security.interfaces.RSAPublicKey;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.jwt.tck.util.ITokenParser;
-import org.wildfly.swarm.mpjwtauth.deployment.principal.DefaultJWTCallerPrincipalFactory;
-import org.wildfly.swarm.mpjwtauth.deployment.principal.JWTAuthContextInfo;
-import org.wildfly.swarm.mpjwtauth.deployment.principal.JWTCallerPrincipalFactory;
+import org.wildfly.swarm.microprofile.jwtauth.deployment.principal.DefaultJWTCallerPrincipalFactory;
+import org.wildfly.swarm.microprofile.jwtauth.deployment.principal.JWTAuthContextInfo;
+import org.wildfly.swarm.microprofile.jwtauth.deployment.principal.JWTCallerPrincipalFactory;
 
 /**
  * MP-JWT TCK harness class to parse a token string

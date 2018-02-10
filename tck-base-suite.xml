@@ -41,16 +41,24 @@
       </run>
     </groups>
     <classes>
+      <!-- run a single method from a class
+      <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RequiredClaimsTest">
+        <methods>
+          <include name="verifyAudience"></include>
+        </methods>
+      </class>
+      -->
       <class name="org.eclipse.microprofile.jwt.tck.parsing.TokenValidationTest" />
       <class name="org.eclipse.microprofile.jwt.tck.util.TokenUtilsTest" />
       <class name="org.eclipse.microprofile.jwt.tck.parsing.TestTokenClaimTypesTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.UnsecuredPingTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RequiredClaimsTest" />
-      <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ClaimValueInjectionTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.JsonValueInjectionTest" />
+      <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ClaimValueInjectionTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ProviderInjectionTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RolesAllowedTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.InvalidTokenTest" />
+      <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.PrimitiveInjectionTest" />
     </classes>
   </test>
 </suite>
