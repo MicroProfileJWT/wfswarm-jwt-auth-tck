@@ -160,8 +160,8 @@
                     <systemPropertyVariables>
                         <!-- Uncomment to run wfswarm with debugging enabled
                         <swarm.debug.port>8888</swarm.debug.port>
-                        -->
                         <swarm.logging>DEBUG</swarm.logging>
+                        -->
                     </systemPropertyVariables>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <suiteXmlFiles>

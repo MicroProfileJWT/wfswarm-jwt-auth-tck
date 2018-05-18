@@ -25,6 +25,10 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.jwt.consumer.JwtContext;
 
 /**
  * An ApplicationArchiveProcessor for the MP-JWT TCK that includes:
@@ -46,9 +50,38 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
         Node configProps = war.get("/META-INF/microprofile-config.properties");
         Node publicKeyNode = war.get("/WEB-INF/classes/publicKey.pem");
         Node publicKey4kNode = war.get("/WEB-INF/classes/publicKey4k.pem");
-        if (configProps == null && publicKeyNode == null && publicKey4kNode == null) {
+        Node mpJWT = war.get("MP-JWT");
+        if (configProps == null && publicKeyNode == null && publicKey4kNode == null && mpJWT == null) {
             return;
         }
+
+        boolean noIss = false;
+        if (mpJWT != null) {
+            log.info("Deployment MP-JWT: "+mpJWT.getAsset().toString());
+            // Build a JwtConsumer that doesn't check signatures or do any validation.
+            JwtConsumer firstPassJwtConsumer = new JwtConsumerBuilder()
+                    .setSkipAllValidators()
+                    .setDisableRequireSignature()
+                    .setSkipSignatureVerification()
+                    .build();
+
+            //The first JwtConsumer is basically just used to parse the JWT into a JwtContext object.
+            StringAsset stringAsset = StringAsset.class.cast(mpJWT.getAsset());
+            String token = stringAsset.getSource();
+            try {
+                JwtContext jwtContext = firstPassJwtConsumer.process(token);
+                JwtClaims claimsSet = jwtContext.getJwtClaims();
+                log.info("MP-JWT.claims: "+claimsSet.getClaimsMap());
+                if (!claimsSet.hasClaim("iss")) {
+                    log.info("MP-JWT has no iss claim");
+                    // Need to setup default iss...
+                    noIss = true;
+                }
+            } catch (Exception e) {
+                log.warning("Unexpected JWT parse error, "+e.getMessage());
+            }
+        }
+
         if (configProps != null) {
             StringWriter sw = new StringWriter();
             InputStream is = configProps.getAsset().openStream();
@@ -79,7 +112,12 @@ public class WFSwarmWarArchiveProcessor implements ApplicationArchiveProcessor {
         if (webXml != null) {
             war.setWebXML(webXml);
         }
-        war.addAsResource("project-defaults.yml", "/project-defaults.yml")
+        //
+        String projectDefaults = "project-defaults.yml";
+        if (noIss) {
+            projectDefaults = "project-defaults-noiss.yml";
+        }
+        war.addAsResource(projectDefaults, "/project-defaults.yml")
             .addAsWebInfResource("jwt-roles.properties", "classes/jwt-roles.properties")
             ;
         log.info("Augmented war: \n"+war.toString(true));

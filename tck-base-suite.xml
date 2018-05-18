@@ -44,12 +44,12 @@
     </groups>
     <classes>
       <!-- run a single method from a class
-      <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RequiredClaimsTest">
+      <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.InvalidTokenTest">
         <methods>
-          <include name="verifyAudience"></include>
+          <include name="callEchoBadIssuer"></include>
         </methods>
       </class>
-      -->
+ -->
       <class name="org.eclipse.microprofile.jwt.tck.util.TokenUtilsTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.UnsecuredPingTest" />
       <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RequiredClaimsTest" />
@@ -70,6 +70,7 @@
       <class name="org.eclipse.microprofile.jwt.tck.config.PublicKeyAsJWKSLocationTest" />
       <class name="org.eclipse.microprofile.jwt.tck.config.PublicKeyAsFileLocationURLTest" />
       <class name="org.eclipse.microprofile.jwt.tck.config.PublicKeyAsBase64JWKTest" />
+      <class name="org.eclipse.microprofile.jwt.tck.config.OptionalIssTest" />
     </classes>
   </test>
 </suite>
